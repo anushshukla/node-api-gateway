@@ -1,14 +1,15 @@
 import * as express from 'express';
-import loadRoutes from './routes';
 import dotenv from 'dotenv';
-// import {config} from 'dotenv/types';
-import webpack, {Error, Stats} from 'webpack';
+import webpack from 'webpack';
+// import fetchRoutes from './fetchRoutes';
+// import fetchGlobalMiddlewares from './fetchGlobalMiddlewares';
+import loadRoutes from './routes';
 
 const compiler = webpack({
   // Configuration Object
 });
 
-compiler.run((err: Error, stats: Stats) => {
+compiler.run((err: Error, stats: webpack.Stats) => {
   if (err || stats.hasErrors()) {
     // Handle errors here
   }
@@ -23,9 +24,10 @@ const watching = compiler.watch({
   // Example watchOptions
   aggregateTimeout: 300,
   poll: undefined,
-}, (err: Error, stats: Stats) => {
+}, (err: Error, stats: webpack.Stats) => {
   if (err || stats.hasErrors()) {
     // Handle errors here
+    return;
   }
   // eslint-disable-next-line no-console
   console.log(stats.toString({
@@ -34,10 +36,10 @@ const watching = compiler.watch({
   }));
 });
 
-watching.close(() => {
-  // eslint-disable-next-line no-console
-  console.log('Watching Ended.');
-});
+// watching.close(() => {
+//   // eslint-disable-next-line no-console
+//   console.log('Watching Ended.');
+// });
 
 const result = dotenv.config();
 if (result.error) {

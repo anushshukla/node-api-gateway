@@ -15,7 +15,7 @@ const config = {
     filename: 'index.js',
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: [ '.tsx', '.ts', '.js', '.mjs'],
   },
   externals: [nodeExternals()],
   watch: NODE_ENV === 'development',
@@ -31,6 +31,7 @@ const config = {
         use: [
           'ts-loader',
         ],
+        exclude: /node_modules/,
       },
     ],
   },
