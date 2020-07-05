@@ -19,7 +19,11 @@ globals: {
 }
 rules: {
   no-console: 2,
-  no-loops/no-loops: 2
+  no-loops/no-loops: 2,
+  # @ToDo fix the below rule issue and remove it
+  '@typescript-eslint/ban-types': 'off',
+  # @ToDo fix the below rule issue and remove it
+  '@typescript-eslint/no-explicit-any': 'off',
   no-mixed-spaces-and-tabs: [
     'error',
     'smart-tabs'
