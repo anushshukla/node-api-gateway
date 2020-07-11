@@ -1,5 +1,6 @@
-import app from '../src/index';
 import * as supertest from 'supertest';
+
+import app from '../src/index';
 describe('app', () => {
   let request;
   beforeEach(() => {

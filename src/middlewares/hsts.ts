@@ -1,3 +1,6 @@
+import { RequestHandler } from 'express';
 import helmet from 'helmet';
 
-export default (config: any) => helmet.hsts(config);
+export default (
+  config: helmet.IHelmetHstsConfiguration | undefined
+): RequestHandler => helmet.hsts(config);

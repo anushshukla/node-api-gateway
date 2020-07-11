@@ -1,32 +1,33 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
+// eslint-disable-next-line require-jsdoc
 export default class Route {
-    @PrimaryGeneratedColumn()
-    middlewareId!: number;
+  @PrimaryGeneratedColumn()
+  middlewareId!: number;
 
-    @Column({
-      length!: 255,
-    })
-    middlewareName!: string;
+  @Column({
+    length: 255
+  })
+  middlewareName!: string;
 
-    @Column({
-      length!: 255,
-    })
-    defaultOptions!: string;
+  @Column({
+    length: 255
+  })
+  defaultOptions!: string;
 
-    @Column('tinyint')
-    isGlobalMiddleware!: number;
+  @Column('tinyint')
+  isGlobalMiddleware!: number;
 
-    @Column()
-    isActive!: boolean;
+  @Column()
+  isActive!: boolean;
 
-    @Column()
-    isDeleted!: boolean;
+  @Column()
+  isDeleted!: boolean;
 
-    @Column()
-    createdAt!: string;
+  @Column()
+  createdAt!: string;
 
-    @Column()
-    updatedAt!: string;
+  @Column()
+  updatedAt!: string;
 }

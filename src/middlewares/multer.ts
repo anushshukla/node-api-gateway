@@ -1,13 +1,32 @@
+import { RequestHandler } from 'express';
 import multer from 'multer';
 
-interface MulterInterface {
-    memoryStorage: boolean
+interface Fields {
+  name: string;
+  maxCount: number;
 }
 
-export default (config: MulterInterface ) => {
+interface MulterInterface {
+  memoryStorage: boolean;
+  fieldname: string;
+  maxCount: number;
+  isMultiple: boolean;
+  fields: Array<Fields>;
+}
+
+export default (config: MulterInterface): RequestHandler => {
   let storage;
-  if (config.memoryStorage) {
+  const { memoryStorage, isMultiple, fieldname } = config;
+  if (memoryStorage) {
     storage = multer.memoryStorage();
   }
-  return multer({storage});
+  const upload = multer({ storage });
+  if (isMultiple) {
+    const { fields } = config;
+    if (Array.isArray(fields)) {
+      return upload.fields(fields);
+    }
+    return upload.array(fieldname, config.maxCount);
+  }
+  return upload.single(fieldname);
 };

@@ -1,12 +1,23 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable
+} from 'typeorm';
+
+import RouteConfig from './route-config';
+import Middleware from './middleware';
 
 @Entity()
+// eslint-disable-next-line require-jsdoc
 export default class Route {
   @PrimaryGeneratedColumn()
   routeId!: number;
 
   @Column({
-    length!: 255,
+    length: 255
   })
   routePath!: string;
 
@@ -24,4 +35,11 @@ export default class Route {
 
   @Column()
   updatedAt!: string;
+
+  @OneToMany(() => RouteConfig, (routeConfig) => routeConfig.route)
+  configs!: RouteConfig[];
+
+  @ManyToMany(() => Middleware)
+  @JoinTable()
+  middlewares!: Middleware[];
 }

@@ -1,24 +1,28 @@
+import fs from 'fs';
+import https from 'https';
+
 import express from 'express';
 import dotenv from 'dotenv';
 import webpack from 'webpack';
+
 import loadRoutes from './routes';
-import safePromise from './utils/safePromise';
+import safePromise, { safePromiseFunction } from './utils/safe-promise';
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
-      safePromise: Function
+      safePromise: safePromiseFunction;
     }
     interface ProcessEnv {
-      DB_TYPE: string,
-      DB_HOST: string,
-      DB_PORT: string,
-      DB_USER: string,
-      DB_PASS: string,
-      DB_NAME: string,
-      PORT: number,
-      DEBUG: boolean
+      DB_TYPE: string;
+      DB_HOST: string;
+      DB_PORT: string;
+      DB_USER: string;
+      DB_PASS: string;
+      DB_NAME: string;
+      PORT: number;
+      DEBUG: boolean;
+      SECURED_SERVER: string;
     }
   }
 }
@@ -34,10 +38,12 @@ compiler.run((err: Error, stats: webpack.Stats) => {
     // Handle errors here
   }
   // eslint-disable-next-line no-console
-  console.log(stats.toString({
-    chunks: false, // Makes the build much quieter
-    colors: true, // Shows colors in the console
-  }));
+  console.log(
+    stats.toString({
+      chunks: false, // Makes the build much quieter
+      colors: true // Shows colors in the console
+    })
+  );
 });
 
 // const watching = compiler.watch({
@@ -65,7 +71,9 @@ const result = dotenv.config();
 if (result.error) {
   throw result.error;
 }
-const {env: {PORT: port}} = process;
+const {
+  env: { PORT: port, SECURED_SERVER }
+} = process;
 const app: express.Application = express();
 
 const onBoot = () => {
@@ -77,7 +85,21 @@ const onBoot = () => {
 };
 
 const startServer = () => {
-  app.listen(port, onBoot);
+  if (SECURED_SERVER === 'YES') {
+    const privateKey = fs.readFileSync('privatekey.pem');
+    const certificate = fs.readFileSync('certificate.pem');
+    https
+      .createServer(
+        {
+          key: privateKey,
+          cert: certificate
+        },
+        app
+      )
+      .listen(port);
+  } else {
+    app.listen(port, onBoot);
+  }
 };
 
 startServer();

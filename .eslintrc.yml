@@ -3,16 +3,19 @@ env:
   es2020: true
 extends:
   - google
+  - prettier
   - eslint:recommended
-  - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - plugin:@typeform/eslint-config
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 11
   sourceType: module
 plugins:
+  - no-loops
   - '@typescript-eslint'
-  - 'no-loops'
 globals: {
   process: true,
   __dirname: true
@@ -20,10 +23,13 @@ globals: {
 rules: {
   no-console: 2,
   no-loops/no-loops: 2,
-  # @ToDo fix the below rule issue and remove it
-  '@typescript-eslint/ban-types': 'off',
-  # @ToDo fix the below rule issue and remove it
-  '@typescript-eslint/no-explicit-any': 'off',
+  no-unused-vars: 'off',
+  '@typescript-eslint/no-unused-vars': [
+    'error',
+    {
+      argsIgnorePattern: '^_'
+    }
+  ],
   no-mixed-spaces-and-tabs: [
     'error',
     'smart-tabs'

@@ -1,3 +1,6 @@
+import { RequestHandler } from 'express';
 import helmet from 'helmet';
 
-export default (config: any) => helmet.frameguard(config);
+export default (
+  config: helmet.IHelmetFrameguardConfiguration | undefined
+): RequestHandler => helmet.frameguard(config);
