@@ -7,15 +7,15 @@ import generateHash from '../utils/generate-hash';
 export default () => (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   const start = Date.now();
   // Or get your request parameters
   const {
     headers: { authorization },
-    path
+    path,
   } = request;
-  const string = authorization + path;
+  const string = `${authorization}-${path}`;
   // Use the CryptoJS
   const algorithm = 'md5';
   const charset: Utf8AsciiLatin1Encoding = 'utf8';

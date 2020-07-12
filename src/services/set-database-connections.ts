@@ -2,7 +2,7 @@ import {
   createConnection,
   Connection,
   ConnectionOptions,
-  getConnectionOptions
+  getConnectionOptions,
 } from 'typeorm';
 
 import safePromise from '../utils/safe-promise';
@@ -10,7 +10,7 @@ import safePromise from '../utils/safe-promise';
 const setDatabaseConnections = async (): Promise<Connection> => {
   const connectionOptions: ConnectionOptions = await getConnectionOptions();
   const [connectionError, connection] = await safePromise(
-    createConnection(connectionOptions)
+    createConnection(connectionOptions),
   );
   if (connectionError) {
     throw connectionError;

@@ -12,10 +12,13 @@ const getDatabaseConnection = async (): Promise<Connection> => {
     return mySqlConnection;
   }
   const [connectionError, connection] = await safePromise(
-    setDatabaseConnections()
+    setDatabaseConnections(),
   );
   if (connectionError) {
     throw connectionError;
+  }
+  if (!connection) {
+    throw new Error('Database connection failed');
   }
   mySqlConnection = connection;
   return mySqlConnection;

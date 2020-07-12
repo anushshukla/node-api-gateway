@@ -7,12 +7,12 @@ export default class Route {
   middlewareId!: number;
 
   @Column({
-    length: 255
+    length: 255,
   })
   middlewareName!: string;
 
   @Column({
-    length: 255
+    length: 255,
   })
   defaultOptions!: string;
 

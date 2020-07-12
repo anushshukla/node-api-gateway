@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 export default () => (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   // @ToDo call Core API for authorisation token validation
   // or check the table where the token is saved

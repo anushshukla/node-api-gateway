@@ -1,13 +1,17 @@
 import 'reflect-metadata';
 
-import safePromise from '../utils/safe-promise';
+import { Connection } from 'typeorm';
+
 import Route from '../entities/route';
+import safePromise from '../utils/safe-promise';
 
 import getDatabaseConnection from './get-database-connection';
+type ConnectionPromiseResponse = [Error] | [null, Connection];
+type ConnectionPromise = Promise<Connection>;
 
 const fetchRouteDetails = async (routePath: string): Promise<Route> => {
-  const [connectionError, connection] = await safePromise(
-    getDatabaseConnection()
+  const [connectionError, connection]: ConnectionPromiseResponse = await safePromise(
+    <ConnectionPromise> getDatabaseConnection(),
   );
   if (connectionError) {
     throw connectionError;
@@ -22,7 +26,7 @@ const fetchRouteDetails = async (routePath: string): Promise<Route> => {
     .select(['route.configs', 'route.middlewares'])
     .execute();
   const [queryError, route] = await safePromise(
-    repository.findOne({ routePath, isActive: true, isDeleted: false })
+    repository.findOne({ routePath, isActive: true, isDeleted: false }),
   );
   if (queryError) {
     throw queryError;

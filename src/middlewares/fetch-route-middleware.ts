@@ -1,55 +1,70 @@
 import { Request, Response, NextFunction } from 'express';
+import { Module } from 'webpack';
 
-import safePromise from '../utils/safe-promise';
 import fetchRouteDetails from '../services/fetch-route-details';
 import fetchGlobalMiddlewares from '../services/fetch-global-middlewares';
+import safePromise from '../utils/safe-promise';
+import Route from '../entities/route';
 
-interface Middleware {
-  middlewareName: string;
-}
+type MiddlewareFunction = (request: Request, response: Response, next: NextFunction) => void;
+
+type RoutePromise = Promise<never>;
 
 const fetchRouteMiddleware = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   const [error, routeDetails] = await safePromise(
-    fetchRouteDetails(request.path)
+    <RoutePromise> fetchRouteDetails(request.path),
   );
   if (error) {
-    throw error;
+    return next(error);
   }
-  const middlewareFuncs: Array<Middleware> = [];
-  if (routeDetails.config.isGlobalMiddlewaresAllowed) {
+  const middlewareFuncs: Array<MiddlewareFunction> = [];
+  const {
+    middlewares = [],
+    configs = [],
+  } = routeDetails as unknown as Route;
+  const isGlobalMiddlewaresAllowed = configs.find((config) => config.routeConfigName === 'isGlobalMiddlewaresAllowed');
+  if (isGlobalMiddlewaresAllowed) {
     const [
       fetchingGlobalMiddlewaresError,
-      globalMiddlewares
+      globalMiddlewares,
     ] = await safePromise(fetchGlobalMiddlewares());
     if (fetchingGlobalMiddlewaresError) {
-      throw fetchingGlobalMiddlewaresError;
+      return next(fetchingGlobalMiddlewaresError);
     }
     const addGlobalMiddlewares = async (middleware: {
       middlewareName: string;
     }) => {
       const { middlewareName } = middleware;
-      const { default: middlewareFunc } = await import(`./${middlewareName}`);
+      const path = `./${middlewareName}`;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { default: middlewareFunc } = await import(path);
       middlewareFuncs.push(middlewareFunc);
     };
     globalMiddlewares.map(addGlobalMiddlewares);
   }
   const addMiddlewares = async (middleware: { middlewareName: string }) => {
-    const { middlewareName } = middleware;
-    const { default: middlewareFunc } = await import(`./${middlewareName}`);
+    type ModuleType = typeof import(middlewarePath);
+    const { default: middlewareFunc }: ModuleType = await import(path);
     middlewareFuncs.push(middlewareFunc);
   };
-  routeDetails.middlewares.map(addMiddlewares);
-  response.locals.routeDetails = routeDetails;
-  const getNextFunc = (index: number) => {
-    middlewareFuncs[index] instanceof Function
-      ? middlewareFuncs[index](request, response, getNextFunc(index + 1))
-      : next();
+  middlewares.map(addMiddlewares);
+  response.locals = {
+    routeDetails,
   };
-  getNextFunc(0);
+  const getNextFunc = (index: number): void | MiddlewareFunction => {
+    const hasMoreMiddlewares = middlewareFuncs[index] instanceof Function;
+    if (!hasMoreMiddlewares) {
+      return next();
+    }
+    const nextMiddleware: void | MiddlewareFunction = getNextFunc(index + 1);
+    const currentMiddleware: void | MiddlewareFunction = middlewareFuncs[index](request, response, nextMiddleware);
+    return currentMiddleware;
+  };
+  return getNextFunc(0);
 };
 
 export default fetchRouteMiddleware;

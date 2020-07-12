@@ -9,7 +9,7 @@ export default (app: Application): void => {
     response.send({
       hostname: request.hostname,
       path: request.path,
-      method: request.method
+      method: request.method,
     });
   });
 

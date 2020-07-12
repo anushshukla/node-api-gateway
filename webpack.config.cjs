@@ -1,14 +1,7 @@
 import path from 'path';
-import nodeExternals from 'webpack-node-externals';
-import WebpackShellPlugin from 'webpack-shell-plugin';
-
-const {
-  NODE_ENV = 'production',
-} = process.env;
 
 const config = {
-  entry: './src/index.ts',
-  mode: NODE_ENV,
+  // entry: path.resolve(__dirname, 'src'),
   target: 'node',
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -17,13 +10,6 @@ const config = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js', '.mjs'],
   },
-  externals: [nodeExternals()],
-  watch: NODE_ENV === 'development',
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: ['yarn run:dev'],
-    }),
-  ],
   module: {
     rules: [
       {

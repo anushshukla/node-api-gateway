@@ -4,7 +4,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
 } from 'typeorm';
 
 import RouteConfig from './route-config';
@@ -17,7 +17,7 @@ export default class Route {
   routeId!: number;
 
   @Column({
-    length: 255
+    length: 255,
   })
   routePath!: string;
 

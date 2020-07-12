@@ -3,39 +3,40 @@ import { IncomingMessage } from 'http';
 
 import { Request, Response } from 'express';
 import { P2cBalancer } from 'load-balancers';
-import httpProxy from 'http-proxy';
-// import safePromise from '../utils/safe-promise';
+import { ServerOptions, createProxyServer } from 'http-proxy';
 
-const proxy = httpProxy.createProxyServer();
+import Route from '../entities/middleware';
 
-const requestForwarding = async (
+const proxy = createProxyServer();
+
+const requestForwarding = (
   request: Request,
-  response: Response
-): Promise<Response> => {
-  const routeDetails = response.locals;
+  response: Response,
+): void => {
+  const { routeDetails } = response.locals;
   if (!routeDetails) {
     response.status(404).send(`${request.path} API not found`);
   }
   const {
     // method,
     forwardRequestDomain,
-    uri
-  } = routeDetails;
-  const balancer = new P2cBalancer(forwardRequestDomain.length.length);
-  const target = forwardRequestDomain[balancer.pick()];
-  const options: httpProxy.ServerOptions = {
+    uri,
+  }: Route = routeDetails;
+  const balancer = new P2cBalancer(forwardRequestDomain.length);
+  const target: string = forwardRequestDomain[balancer.pick()];
+  const options: ServerOptions = {
     target,
     // changeOrigin: true, // needed for virtual hosted sites
     ws: true,
     xfwd: true,
-    forward: uri
+    forward: uri,
   };
   //
   // Listen for the `error` event on `proxy`.
   const onProxyError = (error: Error) => {
     if (error) {
       response.writeHead(500, {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'text/plain',
       });
       response.end('Something went wrong.');
     }
@@ -51,9 +52,9 @@ const requestForwarding = async (
       // eslint-disable-next-line no-console
       console.log(
         'RAW Response from the target',
-        JSON.stringify(proxyRes.headers)
+        JSON.stringify(proxyRes.headers),
       );
-    }
+    },
   );
 
   //
@@ -73,7 +74,7 @@ const requestForwarding = async (
   const onProxyClose = (
     _response: Response,
     _socket: Socket,
-    _head: never
+    _head: never,
   ): void => {
     // view disconnected websocket connections
     // eslint-disable-next-line no-console
@@ -81,7 +82,7 @@ const requestForwarding = async (
   };
   proxy.on('close', onProxyClose);
 
-  return proxy.web(request, response, options);
+  proxy.web(request, response, options);
 };
 
 export default requestForwarding;

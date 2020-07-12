@@ -1,22 +1,27 @@
-import safePromise from '../utils/safe-promise';
+import { Connection, Repository } from 'typeorm';
+
 import Middleware from '../entities/middleware';
+import safePromise from '../utils/safe-promise';
 
 import getDatabaseConnection from './get-database-connection';
 
 const fetchGlobalMiddlewares = async (): Promise<Middleware> => {
-  const [connectionError, connection] = await safePromise(
-    getDatabaseConnection()
+  const [connectionError, connection]: [Error] | [null, Connection] = await safePromise(
+    getDatabaseConnection(),
   );
   if (connectionError) {
     throw connectionError;
   }
-  const repository = connection.getRepository(Middleware);
+  if (!connection) {
+    throw new Error('Database connection failed');
+  }
+  const repository: Repository<Middleware> = connection.getRepository(Middleware);
   const filters = {
     isGlobalMiddleware: true,
     isActive: true,
-    isDeleted: false
+    isDeleted: false,
   };
-  const [queryError, result] = await safePromise(repository.findAll(filters));
+  const [queryError, result]: [Error] | [null, Middleware] = await safePromise(repository.findAll(filters));
   if (queryError) {
     throw queryError;
   }

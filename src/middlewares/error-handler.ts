@@ -21,7 +21,7 @@ export default () => (
   error: InternalServerError,
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Response | void => {
   if (isSystemError(error)) {
     return response.status(500).json({ message: 'Internal Server Error' });

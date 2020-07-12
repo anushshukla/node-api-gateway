@@ -12,12 +12,12 @@ export default class RouteConfig {
   routeId!: number;
 
   @Column({
-    length: 255
+    length: 255,
   })
   routeConfigName!: string;
 
   @Column({
-    length: 255
+    length: 255,
   })
   routeConfigValue!: string;
 

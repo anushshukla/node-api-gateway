@@ -8,16 +8,17 @@ extends:
   - plugin:@typescript-eslint/recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended-requiring-type-checking
-  - plugin:@typeform/eslint-config
+  - '@typeform/eslint-config'
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 11
   sourceType: module
 plugins:
-  - no-loops
   - '@typescript-eslint'
+  - no-loops
 globals: {
   process: true,
+  safePromise: true,
   __dirname: true
 }
 rules: {

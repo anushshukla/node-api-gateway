@@ -6,28 +6,6 @@ import dotenv from 'dotenv';
 import webpack from 'webpack';
 
 import loadRoutes from './routes';
-import safePromise, { safePromiseFunction } from './utils/safe-promise';
-
-declare global {
-  namespace NodeJS {
-    interface Global {
-      safePromise: safePromiseFunction;
-    }
-    interface ProcessEnv {
-      DB_TYPE: string;
-      DB_HOST: string;
-      DB_PORT: string;
-      DB_USER: string;
-      DB_PASS: string;
-      DB_NAME: string;
-      PORT: number;
-      DEBUG: boolean;
-      SECURED_SERVER: string;
-    }
-  }
-}
-
-global.safePromise = safePromise;
 
 const compiler = webpack({
   // Configuration Object
@@ -41,8 +19,8 @@ compiler.run((err: Error, stats: webpack.Stats) => {
   console.log(
     stats.toString({
       chunks: false, // Makes the build much quieter
-      colors: true // Shows colors in the console
-    })
+      colors: true, // Shows colors in the console
+    }),
   );
 });
 
@@ -72,15 +50,16 @@ if (result.error) {
   throw result.error;
 }
 const {
-  env: { PORT: port, SECURED_SERVER }
+  env: {
+    PORT: port = '8000',
+    SECURED_SERVER,
+  },
 } = process;
 const app: express.Application = express();
 
 const onBoot = () => {
   // eslint-disable-next-line no-console
   console.log(`server started at http://localhost:${port}`);
-  // fetchRoutes(app);
-  // fetchMiddlewares(app);
   loadRoutes(app);
 };
 
@@ -92,9 +71,9 @@ const startServer = () => {
       .createServer(
         {
           key: privateKey,
-          cert: certificate
+          cert: certificate,
         },
-        app
+        app,
       )
       .listen(port);
   } else {
