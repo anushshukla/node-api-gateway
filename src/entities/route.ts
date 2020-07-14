@@ -1,45 +1,46 @@
 import {
-  Entity,
+  BaseEntity,
   Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+} from "typeorm";
 
-import RouteConfig from './route-config';
-import Middleware from './middleware';
+import Middleware from "./middleware";
+import RouteConfig from "./route-config";
 
-@Entity()
+@Entity({name: "routes"})
 // eslint-disable-next-line require-jsdoc
-export default class Route {
+export default class Route extends BaseEntity {
   @PrimaryGeneratedColumn()
-  routeId!: number;
+  public routeId!: number;
 
   @Column({
     length: 255,
   })
-  routePath!: string;
+  public routePath!: string;
 
-  @Column('tinyint')
-  allowGlobalMiddlewares!: number;
-
-  @Column()
-  isActive!: boolean;
+  @Column("tinyint")
+  public allowGlobalMiddlewares!: number;
 
   @Column()
-  isDeleted!: boolean;
+  public isActive!: boolean;
 
   @Column()
-  createdAt!: string;
+  public isDeleted!: boolean;
 
   @Column()
-  updatedAt!: string;
+  public createdAt!: string;
+
+  @Column()
+  public updatedAt!: string;
 
   @OneToMany(() => RouteConfig, (routeConfig) => routeConfig.route)
-  configs!: RouteConfig[];
+  public configs!: RouteConfig[];
 
   @ManyToMany(() => Middleware)
   @JoinTable()
-  middlewares!: Middleware[];
+  public middlewares!: Middleware[];
 }

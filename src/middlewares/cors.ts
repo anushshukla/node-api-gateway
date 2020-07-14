@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
-import cors from 'cors';
+import cors from "cors";
+import { RequestHandler } from "express";
 
 export default (
   config: cors.CorsOptions | cors.CorsOptionsDelegate | undefined,

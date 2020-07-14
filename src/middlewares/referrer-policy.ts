@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
-import helmet from 'helmet';
+import { RequestHandler } from "express";
+import helmet from "helmet";
 
 type referrerPolicyConfig =
   | helmet.IHelmetReferrerPolicyConfiguration

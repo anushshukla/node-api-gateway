@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from "express";
 
 const isSystemError = (error: Error) =>
   error instanceof EvalError ||
@@ -24,7 +24,7 @@ export default () => (
   next: NextFunction,
 ): Response | void => {
   if (isSystemError(error)) {
-    return response.status(500).json({ message: 'Internal Server Error' });
+    return response.status(500).json({ message: "Internal Server Error" });
   }
   if (error instanceof Error) {
     return response.status(500).json({ message: error.message });

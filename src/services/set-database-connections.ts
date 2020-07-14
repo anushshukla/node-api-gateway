@@ -1,11 +1,11 @@
 import {
-  createConnection,
   Connection,
   ConnectionOptions,
+  createConnection,
   getConnectionOptions,
-} from 'typeorm';
+} from "typeorm";
 
-import safePromise from '../utils/safe-promise';
+import safePromise from "../utils/safe-promise";
 
 const setDatabaseConnections = async (): Promise<Connection> => {
   const connectionOptions: ConnectionOptions = await getConnectionOptions();

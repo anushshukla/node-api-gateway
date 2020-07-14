@@ -1,9 +1,9 @@
-import 'reflect-metadata';
-import { Connection } from 'typeorm';
+import "reflect-metadata";
+import { Connection } from "typeorm";
 
-import safePromise from '../utils/safe-promise';
+import safePromise from "../utils/safe-promise";
 
-import setDatabaseConnections from './set-database-connections';
+import setDatabaseConnections from "./set-database-connections";
 
 let mySqlConnection: Connection;
 
@@ -18,7 +18,7 @@ const getDatabaseConnection = async (): Promise<Connection> => {
     throw connectionError;
   }
   if (!connection) {
-    throw new Error('Database connection failed');
+    throw new Error("Database connection failed");
   }
   mySqlConnection = connection;
   return mySqlConnection;

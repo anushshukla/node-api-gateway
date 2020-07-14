@@ -1,7 +1,7 @@
-import { Request, Response, RequestHandler, NextFunction } from 'express';
-import Joi from '@hapi/joi';
+import Joi from "@hapi/joi";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 
-import safePromise from '../utils/safe-promise';
+import safePromise from "../utils/safe-promise";
 
 export default (
   joiSchema: Joi.SchemaMap<never> | undefined,

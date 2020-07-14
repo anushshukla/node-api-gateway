@@ -11,8 +11,8 @@ extends:
   - '@typeform/eslint-config'
 parser: '@typescript-eslint/parser'
 parserOptions:
-  ecmaVersion: 11
-  sourceType: module
+  ecmaVersion: 2018
+  sourceType: 'module'
 plugins:
   - '@typescript-eslint'
   - no-loops

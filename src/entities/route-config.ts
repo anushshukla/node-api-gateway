@@ -1,26 +1,25 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import Route from './route';
+import Route from "./route";
 
-@Entity()
-// eslint-disable-next-line require-jsdoc
+@Entity({name: "routeConfig"})
 export default class RouteConfig {
   @PrimaryGeneratedColumn()
-  routeConfigId!: number;
+  public routeConfigId!: number;
 
-  @PrimaryGeneratedColumn()
-  routeId!: number;
-
-  @Column({
-    length: 255,
-  })
-  routeConfigName!: string;
+  @Column()
+  public routeId!: number;
 
   @Column({
     length: 255,
   })
-  routeConfigValue!: string;
+  public routeConfigName!: string;
+
+  @Column({
+    length: 255,
+  })
+  public routeConfigValue!: string;
 
   @ManyToOne(() => Route, (route) => route.configs)
-  route!: Route;
+  public route!: Route;
 }

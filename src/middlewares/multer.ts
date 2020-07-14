@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
-import multer from 'multer';
+import { RequestHandler } from "express";
+import multer from "multer";
 
 interface Fields {
   name: string;
@@ -11,7 +11,7 @@ interface MulterInterface {
   fieldname: string;
   maxCount: number;
   isMultiple: boolean;
-  fields: Array<Fields>;
+  fields: Fields[];
 }
 
 export default (config: MulterInterface): RequestHandler => {

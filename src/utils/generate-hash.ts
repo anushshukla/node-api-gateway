@@ -1,4 +1,4 @@
-import crypto, { Utf8AsciiLatin1Encoding, Hash } from 'crypto';
+import crypto, { Hash, Utf8AsciiLatin1Encoding } from "crypto";
 
 interface HashOptions {
   string: string;

@@ -1,8 +1,8 @@
-import { Utf8AsciiLatin1Encoding } from 'crypto';
+import { Utf8AsciiLatin1Encoding } from "crypto";
 
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from "express";
 
-import generateHash from '../utils/generate-hash';
+import generateHash from "../utils/generate-hash";
 
 export default () => (
   request: Request,
@@ -17,13 +17,13 @@ export default () => (
   } = request;
   const string = `${authorization}-${path}`;
   // Use the CryptoJS
-  const algorithm = 'md5';
-  const charset: Utf8AsciiLatin1Encoding = 'utf8';
+  const algorithm = "md5";
+  const charset: Utf8AsciiLatin1Encoding = "utf8";
   const hashOptions = { string, algorithm, charset };
   const hash = generateHash(hashOptions);
   // eslint-disable-next-line no-console
   console.log(`${hash} requested started at`, start);
-  response.on('finish', () => {
+  response.on("finish", () => {
     // eslint-disable-next-line no-console
     console.log(`${hash} requested ended at`, Date.now() - start);
   });

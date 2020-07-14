@@ -1,33 +1,32 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
-// eslint-disable-next-line require-jsdoc
-export default class Route {
+@Entity({name: "middlewares"})
+export default class Middleware extends BaseEntity {
   @PrimaryGeneratedColumn()
-  middlewareId!: number;
+  public middlewareId!: number;
 
   @Column({
     length: 255,
   })
-  middlewareName!: string;
+  public middlewareName!: string;
 
   @Column({
     length: 255,
   })
-  defaultOptions!: string;
+  public defaultOptions!: string;
 
-  @Column('tinyint')
-  isGlobalMiddleware!: number;
-
-  @Column()
-  isActive!: boolean;
+  @Column("tinyint")
+  public isGlobalMiddleware!: number;
 
   @Column()
-  isDeleted!: boolean;
+  public isActive!: boolean;
 
   @Column()
-  createdAt!: string;
+  public isDeleted!: boolean;
 
   @Column()
-  updatedAt!: string;
+  public createdAt!: string;
+
+  @Column()
+  public updatedAt!: string;
 }
