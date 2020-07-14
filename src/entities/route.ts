@@ -6,6 +6,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from "typeorm";
 
 import Middleware from "./middleware";
@@ -38,9 +39,20 @@ export default class Route extends BaseEntity {
   public updatedAt!: string;
 
   @OneToMany(() => RouteConfig, (routeConfig) => routeConfig.route)
+  @JoinColumn({ name: "routeId" })
   public configs!: RouteConfig[];
 
   @ManyToMany(() => Middleware)
-  @JoinTable()
+  @JoinTable({
+    name: 'routeMiddlewares',
+    joinColumn: {
+      name: 'routeId',
+      referencedColumnName: 'routeId',
+    },
+    inverseJoinColumn: {
+      name: 'middlewareId',
+      referencedColumnName: 'middlewareId',
+    }
+  })
   public middlewares!: Middleware[];
 }

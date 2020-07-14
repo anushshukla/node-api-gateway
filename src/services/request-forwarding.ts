@@ -22,6 +22,9 @@ const requestForwarding = (
   } = routeDetails;
   const forwardRequestDomain = configs.find((config) => config.routeConfigName === "forwardRequestDomain");
   const uri = configs.find((config) => config.routeConfigName === "forwardRequestDomain");
+  if (!forwardRequestDomain) {
+    response.status(500).send(`Missing config`);
+  }
   const balancer = new P2cBalancer(forwardRequestDomain.length);
   const target: string = forwardRequestDomain[balancer.pick()];
   const options: ServerOptions = {

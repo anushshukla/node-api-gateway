@@ -1,8 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 
 import Route from "./route";
 
-@Entity({name: "routeConfig"})
+@Entity({name: "routeConfigs"})
 export default class RouteConfig {
   @PrimaryGeneratedColumn()
   public routeConfigId!: number;
@@ -21,5 +21,6 @@ export default class RouteConfig {
   public routeConfigValue!: string;
 
   @ManyToOne(() => Route, (route) => route.configs)
+  @JoinColumn({ name: "routeId" })
   public route!: Route;
 }

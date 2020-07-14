@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
+    /* Experimental Options */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    /* Additional Checks */
+    "noUnusedLocals": true,                
+    "noUnusedParameters": true,            
+    "noImplicitReturns": true,             
+    "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
+    "resolveJsonModule": false,
     "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": true,
     "moduleResolution": "node",
+    /* Basic Options */
     "module": "CommonJS",
     "target": "ESNext",
     "outDir": "build",
+    "lib": ["es6"],
     "rootDirs": ["src", "tests"]
-  }
+  },
 }

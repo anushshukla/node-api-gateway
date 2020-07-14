@@ -18,19 +18,17 @@ const fetchRouteDetails = async (routePath: string): Promise<Route> => {
   }
   // eslint-disable-next-line no-console
   console.log("routePath: ", routePath);
-  const route = connection
-    .getRepository(Route)
-    .createQueryBuilder("route")
-    .leftJoinAndSelect("route.user", "user")
-    .where("route.routePath = :routePath", { routePath })
-    .select(["route.configs", "route.middlewares"])
-    .execute();
-  // const [queryError, route] = await safePromise(
-  //   repository.find({ where: { routePath, isActive: true, isDeleted: false } }),
-  // );
-  // if (queryError) {
-  //   throw queryError;
-  // }
+  const where = { routePath };
+  const relations = ['configs', 'middlewares'];
+  const find = {
+    relations,
+    where,
+  };
+  const routeRepositor = connection.getRepository(Route);
+  const [queryError, route] = await safePromise(routeRepositor.findOne(find));
+  if (queryError) {
+    throw queryError;
+  }
   // eslint-disable-next-line no-console
   console.log("route from the db: ", route);
   return route;
