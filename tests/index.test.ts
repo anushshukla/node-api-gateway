@@ -1,13 +1,12 @@
-import * as supertest from "supertest";
+import supertest from "supertest";
 
-import app from "./index";
+import { app } from "../src/server/startServer";
 describe("app", () => {
-  let request;
+  let request: supertest.SuperTest<supertest.Test>;
   beforeEach(() => {
     request = supertest(app);
   });
   it("should return a successful response for GET /", (done) => {
-    request.get("/")
-      .expect(200, done);
+    request.get("/").expect(200, done);
   });
 });

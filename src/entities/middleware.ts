@@ -11,9 +11,9 @@ export default class Middleware extends BaseEntity {
   public middlewareName!: string;
 
   @Column({
-    length: 255,
+    type: 'json'
   })
-  public defaultOptions!: string;
+  public options!: string;
 
   @Column("tinyint")
   public isGlobalMiddleware!: number;

@@ -13,7 +13,7 @@ import Middleware from "./middleware";
 import RouteConfig from "./route-config";
 
 interface transposedConfigType {
-  [key: string]: string
+  [key: string]: string;
 }
 
 @Entity({name: "routes"})
@@ -29,6 +29,9 @@ export default class Route extends BaseEntity {
 
   @Column("tinyint")
   public allowGlobalMiddlewares!: number;
+
+  @Column("tinyint")
+  public allowErrorHandling!: number;
 
   @Column()
   public isActive!: boolean;

@@ -1,6 +1,7 @@
 import { Application, Request, Response } from "express";
 // import axios from 'axios';
 
+import errorHandler from '../middlewares/error-handler';
 import fetchRouteMiddleware from "../middlewares/fetch-route-middleware";
 import requestForwarding from "../services/request-forwarding";
 
@@ -18,4 +19,7 @@ export default (app: Application): void => {
     .post("*", fetchRouteMiddleware, requestForwarding)
     .put("*", fetchRouteMiddleware, requestForwarding)
     .delete("*", fetchRouteMiddleware, requestForwarding);
+  
+  app.use(errorHandler)
+
 };

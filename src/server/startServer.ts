@@ -11,7 +11,8 @@ const {
       SECURED_SERVER,
     },
   } = process;
-const app: express.Application = express();
+
+export const app: express.Application = express();
 
 export default (): void => {
     if (SECURED_SERVER === "YES") {

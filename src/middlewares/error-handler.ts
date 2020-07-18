@@ -23,11 +23,14 @@ export default () => (
   response: Response,
   next: NextFunction,
 ): Response | void => {
+  if (!response.locals.routeDetails.allowErrorHandling) {
+    return next(error);
+  }
   if (isSystemError(error)) {
     return response.status(500).json({ message: "Internal Server Error" });
   }
   if (error instanceof Error) {
     return response.status(500).json({ message: error.message });
   }
-  return next();
+  return next(error);
 };
