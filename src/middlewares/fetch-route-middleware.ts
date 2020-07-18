@@ -8,7 +8,7 @@ import Middleware from "../entities/middleware";
 type MiddlewareFunction = (request: Request, response: Response, next: NextFunction) => void;
 type MiddlewareImports = Array<Promise<MiddlewareFunction>>;
 
-const dynamicImport = async (path: string) => (await import(path)).default();
+const dynamicImport = async (path: string) => await import(path);
 
 export default async (
   request: Request,
@@ -39,7 +39,7 @@ export default async (
     if (error) {
       throw error;
     }
-    return importedMiddleware(options);
+    return importedMiddleware.default(options);
   };
   const importPromises = middlewares.map(addMiddlewares);
   if (isGlobalMiddlewaresAllowed) {

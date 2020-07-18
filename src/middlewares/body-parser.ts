@@ -1,4 +1,4 @@
-import * as bodyParser from "body-parser";
-import { RequestHandler } from "express";
+import bodyParser from "body-parser";
+import { NextHandleFunction } from 'connect';
 
-export default (): RequestHandler => bodyParser.json();
+export default (): NextHandleFunction => bodyParser.json();
