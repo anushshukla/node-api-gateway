@@ -34,8 +34,8 @@ const requestForwarding = (
     if (error) {
       const contentType: string = "text/plain";
       const responseObj = {
-        "Content-Type": contentType 
-      }
+        "Content-Type": contentType
+      };
       response.writeHead(500, responseObj);
       response.end("Something went wrong.");
     }

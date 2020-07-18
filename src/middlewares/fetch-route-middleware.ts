@@ -21,15 +21,16 @@ const fetchRouteMiddleware = async (
     return next(error);
   }
   if (!routeDetails) {
-    throw new Error('Route details 404');
+    throw new Error("Route details 404");
   }
   const middlewareFuncs: MiddlewareFunction[] = [];
   const middlewareImportPromises: MiddlewareImports = [];
   const {
     middlewares,
-    configs,
+    transposedConfigs: {
+      isGlobalMiddlewaresAllowed,
+    },
   } = routeDetails;
-  const isGlobalMiddlewaresAllowed = configs.find((config) => config.routeConfigName === "isGlobalMiddlewaresAllowed");
   const addMiddlewares = async (middleware: {
     middlewareName: string;
   }) => {
@@ -62,7 +63,7 @@ const fetchRouteMiddleware = async (
   if (Array.isArray(dynamicImports)) {
     middlewareFuncs.push(...dynamicImports);
   }
-  middlewareFuncs
+  middlewareFuncs;
   response.locals = {
     routeDetails,
   };

@@ -2,11 +2,11 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
-  JoinColumn,
 } from "typeorm";
 
 import Middleware from "./middleware";
@@ -14,7 +14,7 @@ import RouteConfig from "./route-config";
 
 interface transposedConfigType {
   [key: string]: string
-};
+}
 
 @Entity({name: "routes"})
 // eslint-disable-next-line require-jsdoc
@@ -48,35 +48,34 @@ export default class Route extends BaseEntity {
 
   @ManyToMany(() => Middleware)
   @JoinTable({
-    name: 'routeMiddlewares',
+    name: "routeMiddlewares",
     joinColumn: {
-      name: 'routeId',
-      referencedColumnName: 'routeId',
+      name: "routeId",
+      referencedColumnName: "routeId",
     },
     inverseJoinColumn: {
-      name: 'middlewareId',
-      referencedColumnName: 'middlewareId',
+      name: "middlewareId",
+      referencedColumnName: "middlewareId",
     }
   })
   public middlewares!: Middleware[];
 
-  public _transposedConfigs!: transposedConfigType[];
+  public _transposedConfigs!: transposedConfigType;
 
-  public getTransposedConfigs(): transposedConfigType[] {
-    return this.configs.map(config => {
+  public getTransposedConfigs(): transposedConfigType {
+    const transposedConfig: transposedConfigType = {};
+    this.configs.forEach((config) => {
       const { routeConfigName, routeConfigValue } = config;
-      const transposedConfig = {
-        [routeConfigName]: routeConfigValue,
-      }
-      return transposedConfig;
-    })
+      transposedConfig[routeConfigName] = routeConfigValue;
+    });
+    return transposedConfig;
   }
 
-  set transposedConfigs(transposedConfigs: transposedConfigType[]) {
-    this.transposedConfigs = transposedConfigs;
+  set transposedConfigs(transposedConfigs: transposedConfigType) {
+    this._transposedConfigs = transposedConfigs;
   }
 
   get transposedConfigs() {
-    return this._transposedConfigs
+    return this._transposedConfigs;
   }
 }

@@ -17,12 +17,12 @@ export default async (routePath: string): Promise<Route> => {
     throw connectionError;
   }
   if (!connection) {
-    throw new Error('no connection found');
+    throw new Error("no connection found");
   }
   // eslint-disable-next-line no-console
   console.log("routePath: ", routePath);
   const where = { routePath };
-  const relations = ['configs', 'middlewares'];
+  const relations = ["configs", "middlewares"];
   const find = {
     relations,
     where,
@@ -33,7 +33,7 @@ export default async (routePath: string): Promise<Route> => {
     throw queryError;
   }
   if (!route) {
-    throw new Error('no route found');
+    throw new Error("no route found");
   }
   const transposedConfigs = route.getTransposedConfigs();
   route.transposedConfigs = transposedConfigs;

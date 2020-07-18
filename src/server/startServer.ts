@@ -3,7 +3,7 @@ import https from "https";
 
 import express from "express";
 
-import onBoot from './onBoot';
+import onBoot from "./onBoot";
 
 const {
     env: {

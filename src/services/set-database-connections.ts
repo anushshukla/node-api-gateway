@@ -16,7 +16,7 @@ const setDatabaseConnections = async (): Promise<Connection> => {
     throw connectionError;
   }
   if (!connection) {
-    throw new Error('database connection creation failed');
+    throw new Error("database connection creation failed");
   }
   return connection;
 };

@@ -19,7 +19,7 @@
     "ts:prod": "tsc && node ./build/index.js",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "prestart": "npm run build",
-    "debug": "nodemon --inspect-brk=9229 src/index.ts",
+    "debug": "nodemon --watch 'src/**/*.ts' --inspect-brk=9229 src/index.ts",
     "dev": "ts-node src/index.ts",
     "build": "tsc -p ."
   },

@@ -2,9 +2,9 @@ import express from "express";
 import loadRoutes from "../routes";
 
 interface onBootParams {
-    app: express.Application,
-    port: string,
-};
+    app: express.Application;
+    port: string;
+}
 
 export default (params: onBootParams) => () => {
     const { app, port } = params;

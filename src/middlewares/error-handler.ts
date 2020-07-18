@@ -19,7 +19,7 @@ type InternalServerError =
 
 export default () => (
   error: InternalServerError,
-  request: Request,
+  _request: Request,
   response: Response,
   next: NextFunction,
 ): Response | void => {
