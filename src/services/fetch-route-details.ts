@@ -9,12 +9,15 @@ import getDatabaseConnection from "./get-database-connection";
 type ConnectionPromiseResponse = [Error] | [null, Connection];
 type ConnectionPromise = Promise<Connection>;
 
-const fetchRouteDetails = async (routePath: string): Promise<Route> => {
+export default async (routePath: string): Promise<Route> => {
   const [connectionError, connection]: ConnectionPromiseResponse = await safePromise(
     getDatabaseConnection() as ConnectionPromise,
   );
   if (connectionError) {
     throw connectionError;
+  }
+  if (!connection) {
+    throw new Error('no connection found');
   }
   // eslint-disable-next-line no-console
   console.log("routePath: ", routePath);
@@ -29,9 +32,12 @@ const fetchRouteDetails = async (routePath: string): Promise<Route> => {
   if (queryError) {
     throw queryError;
   }
+  if (!route) {
+    throw new Error('no route found');
+  }
+  const transposedConfigs = route.getTransposedConfigs();
+  route.transposedConfigs = transposedConfigs;
   // eslint-disable-next-line no-console
   console.log("route from the db: ", route);
   return route;
 };
-
-export default fetchRouteDetails;

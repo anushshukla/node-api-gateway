@@ -5,8 +5,9 @@ import fetchRouteDetails from "../services/fetch-route-details";
 import safePromise from "../utils/safe-promise";
 
 type MiddlewareFunction = (request: Request, response: Response, next: NextFunction) => void;
+type MiddlewareImports = Array<Promise<MiddlewareFunction>>;
 
-const dynamicImport = async path => (await import(path)).default();
+const dynamicImport = async (path: string) => (await import(path)).default();
 
 const fetchRouteMiddleware = async (
   request: Request,
@@ -19,8 +20,11 @@ const fetchRouteMiddleware = async (
   if (error) {
     return next(error);
   }
+  if (!routeDetails) {
+    throw new Error('Route details 404');
+  }
   const middlewareFuncs: MiddlewareFunction[] = [];
-  const middlewareImportPromises: Promise<MiddlewareFunction>[] = [];
+  const middlewareImportPromises: MiddlewareImports = [];
   const {
     middlewares,
     configs,
@@ -45,7 +49,7 @@ const fetchRouteMiddleware = async (
     if (fetchingGlobalMiddlewaresError) {
       return next(fetchingGlobalMiddlewaresError);
     }
-    globalMiddlewares.map(addMiddlewares);
+    globalMiddlewares && globalMiddlewares.map(addMiddlewares);
     const importPromises = middlewares.map(addMiddlewares);
     middlewareImportPromises.push(...importPromises);
   }
@@ -55,7 +59,9 @@ const fetchRouteMiddleware = async (
   if (error) {
     throw dynamicImportError;
   }
-  middlewareFuncs.push(dynamicImports);
+  if (Array.isArray(dynamicImports)) {
+    middlewareFuncs.push(...dynamicImports);
+  }
   middlewareFuncs
   response.locals = {
     routeDetails,

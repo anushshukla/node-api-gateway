@@ -12,6 +12,10 @@ import {
 import Middleware from "./middleware";
 import RouteConfig from "./route-config";
 
+interface transposedConfigType {
+  [key: string]: string
+};
+
 @Entity({name: "routes"})
 // eslint-disable-next-line require-jsdoc
 export default class Route extends BaseEntity {
@@ -55,4 +59,24 @@ export default class Route extends BaseEntity {
     }
   })
   public middlewares!: Middleware[];
+
+  public _transposedConfigs!: transposedConfigType[];
+
+  public getTransposedConfigs(): transposedConfigType[] {
+    return this.configs.map(config => {
+      const { routeConfigName, routeConfigValue } = config;
+      const transposedConfig = {
+        [routeConfigName]: routeConfigValue,
+      }
+      return transposedConfig;
+    })
+  }
+
+  set transposedConfigs(transposedConfigs: transposedConfigType[]) {
+    this.transposedConfigs = transposedConfigs;
+  }
+
+  get transposedConfigs() {
+    return this._transposedConfigs
+  }
 }

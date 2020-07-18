@@ -29,7 +29,7 @@ const fetchGlobalMiddlewares = async (): Promise<Middleware[]> => {
   }
   // eslint-disable-next-line no-console
   console.log("result: ", result);
-  return result;
+  return result || [];
 };
 
 export default fetchGlobalMiddlewares;
