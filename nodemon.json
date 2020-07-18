@@ -9,6 +9,6 @@
     "ext": "js,ts,json",
     "exec": "ts-node src/index.ts",
     "execMap": {
-        "ts": "node --require ts-node/register/transpile-only"
+        "ts": "node --inspect -r ts-node/register src/index.ts"
     }
 }
