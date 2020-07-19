@@ -1,6 +1,7 @@
 {
     "watch": [
-        "src"
+        "src",
+        ".env"
     ],
     "ignore": [
         "src/**/*.spec.ts"

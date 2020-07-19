@@ -13,7 +13,7 @@ import Middleware from "./middleware";
 import RouteConfig from "./route-config";
 
 interface transposedConfigType {
-  [key: string]: string;
+  [key: string]: string[] | string;
 }
 
 @Entity({name: "routes"})
@@ -69,7 +69,15 @@ export default class Route extends BaseEntity {
     const transposedConfig: transposedConfigType = {};
     this.configs.forEach((config) => {
       const { routeConfigName, routeConfigValue } = config;
-      transposedConfig[routeConfigName] = routeConfigValue;
+      const routeConfig = transposedConfig[routeConfigName];
+      let configValue: string | string[] = routeConfigValue;
+      if (Array.isArray(routeConfig)) {
+        configValue = routeConfig;
+        configValue.push(routeConfigValue);
+      } else if (routeConfig) {
+        configValue = [<string> routeConfig, routeConfigValue];
+      }
+      transposedConfig[routeConfigName] = configValue;
     });
     return transposedConfig;
   }
