@@ -28,7 +28,6 @@ const fetchGlobalMiddlewares = async (): Promise<Middleware[]> => {
     throw queryError;
   }
   // eslint-disable-next-line no-console
-  console.log("result: ", result);
   return result || [];
 };
 

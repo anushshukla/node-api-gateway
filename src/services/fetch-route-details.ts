@@ -19,8 +19,6 @@ export default async (routePath: string): Promise<Route> => {
   if (!connection) {
     throw new Error("no connection found");
   }
-  // eslint-disable-next-line no-console
-  console.log("routePath: ", routePath);
   const where = { routePath };
   const relations = ["configs", "middlewares"];
   const find = {
@@ -37,7 +35,5 @@ export default async (routePath: string): Promise<Route> => {
   }
   const transposedConfigs = route.getTransposedConfigs();
   route.transposedConfigs = transposedConfigs;
-  // eslint-disable-next-line no-console
-  console.log("route from the db: ", route);
   return route;
 };

@@ -48,12 +48,12 @@ const requestForwarding = (
     }
   };
   const onProxyStart = (
-      proxyReq: http.ClientRequest,
+      _proxyReq: http.ClientRequest,
       _request: http.IncomingMessage,
       _response: http.ServerResponse,
       _options: ServerOptions
   ): void => {
-    console.log(proxyReq);
+    // @ToDo do some logging
   }
   proxy.on("error", onProxyError);
   proxy.on("proxyReq", onProxyStart);
