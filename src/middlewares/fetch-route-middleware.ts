@@ -16,7 +16,7 @@ export default async (
   next: NextFunction,
 ): Promise<void> => {
   const [error, routeDetails] = await safePromise(
-    fetchRouteDetails(request.path),
+    fetchRouteDetails(request.path, request.method),
   );
   if (error) {
     return next(error);

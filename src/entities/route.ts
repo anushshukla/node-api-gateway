@@ -27,6 +27,11 @@ export default class Route extends BaseEntity {
   })
   public routePath!: string;
 
+  @Column({
+    length: 10,
+  })
+  public method!: string;
+
   @Column("tinyint")
   public allowGlobalMiddlewares!: number;
 

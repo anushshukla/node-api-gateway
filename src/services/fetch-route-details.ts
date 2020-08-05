@@ -9,7 +9,7 @@ import getDatabaseConnection from "./get-database-connection";
 type ConnectionPromiseResponse = [Error] | [null, Connection];
 type ConnectionPromise = Promise<Connection>;
 
-export default async (routePath: string): Promise<Route> => {
+export default async (routePath: string, method: string): Promise<Route> => {
   const [connectionError, connection]: ConnectionPromiseResponse = await safePromise(
     getDatabaseConnection() as ConnectionPromise,
   );
@@ -19,7 +19,7 @@ export default async (routePath: string): Promise<Route> => {
   if (!connection) {
     throw new Error("no connection found");
   }
-  const where = { routePath };
+  const where = { routePath, method };
   const relations = ["configs", "middlewares"];
   const find = {
     relations,
