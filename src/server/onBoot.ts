@@ -1,7 +1,7 @@
 import express from "express";
 import loadRoutes from "../routes";
 
-interface onBootParams {
+export interface onBootParams {
     app: express.Application;
     port: string;
 }
