@@ -1,2 +1,2 @@
 # node-api-gateway
-API Gateway on NodeJS
+NodeJS API Gateway
